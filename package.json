@@ -1,0 +1,34 @@
+{
+  "name": "matrix-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@skynexui/components": "^1.23.9",
+    "next": "^12.0.8",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablovianas/Aluracord.git"
+  },
+  "keywords": [
+    "aluracord",
+    "imersao-react"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pablovianas/Aluracord/issues"
+  },
+  "homepage": "https://github.com/pablovianas/Aluracord#readme"
+}
