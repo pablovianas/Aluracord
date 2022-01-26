@@ -1,38 +1,7 @@
 import appConfig from '../config.json'
 import {Box, Button, Text, TextField, Image} from '@skynexui/components'
-
-function GlobalStyle(){
-    
-    return (
-        <style global jsx>{`
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                list-style: none;
-            }
-            body {
-                font-family: 'Open Sans', sans-serif;
-            }
-            /* App fit Height */ 
-            html, body, #__next {
-                min-height: 100vh;
-                display: flex;
-                flex: 1;
-            }
-            #__next {
-                flex: 1;
-            }
-            #__next > * {
-                flex: 1;
-            }
-            /* ./App fit Height */ 
-        
-        `}</style>
-
-
-    )
-}
+import React from 'react';
+import {useRouter} from 'next/router' //react hooks
 
 
 function Title(props){
@@ -41,7 +10,7 @@ function Title(props){
 
     return (
         <>
-            <GlobalStyle/>
+    
             <Tag>Welcome back!</Tag>
             <style jsx>{`
                 ${Tag}{
@@ -76,11 +45,13 @@ function Title(props){
 */
 
 export default function HomePage() {
-  const username = 'pablovianas';
+
+  const [username, setUsername] = React.useState('pablovianas');
+  const router = useRouter();
 
   return (
     <>
-      <GlobalStyle />
+
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -106,6 +77,10 @@ export default function HomePage() {
           {/* Formulário */}
           <Box
             as="form"
+            onSubmit={function(event){
+                event.preventDefault();
+                router.push('/chat');
+            }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px', backgroundColor:'C1EAC5'
@@ -118,11 +93,14 @@ export default function HomePage() {
 
             <TextField
                 fullWidth
-                onChange={function noRefCheck(){}}
-                onKeyPress={function noRefCheck(){}}
+                onChange={function (event){
+                    const value = event.target.value
+
+                    setUsername(value)
+                }}
                 size="xs"
                 styleSheet={{}}
-                value=""
+                value={username}
                 variant="basicBordered"
             />
            <Button

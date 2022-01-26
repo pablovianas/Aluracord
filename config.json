@@ -13,7 +13,8 @@
         "700": "#207227",
         "800": "#0E5814",
         "900": "#05400A",
-        "transparent": "#C1EAC5"
+        "transparent": "#C1EAC5",
+        "black": "#000000"
       },
       "neutrals": {
         "000": "#FFFFFF",
