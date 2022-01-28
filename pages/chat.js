@@ -2,15 +2,26 @@ import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
 import { createClient } from '@supabase/supabase-js'
+import { useRouter } from 'next/router' //react hooks
+import { ButtonSendSticker } from '../src/components/ButtonSendSticker'
 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM3ODA5NywiZXhwIjoxOTU4OTU0MDk3fQ.OZyBU2zhYAL6ZcXWYD3lLVTxKS2vQO8WHnO731jomDk'
 const SUPABASE_URL = 'https://dwghgzffnsulnbnxtogo.supabase.co'
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-
+function escutaMensagensEmTempoReal(adicionaMensagem) {
+    return supabase
+        .from('mensagens')
+        .on('INSERT', (respostaLive) => {
+            adicionaMensagem(respostaLive.new);
+        })
+        .subscribe();
+}
 
 export default function ChatPage() {
+    const roteamento = useRouter();
+    const usuarioLogado = roteamento.query.username;
     const [mensagem, setMensagem] = React.useState('');
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
@@ -19,15 +30,38 @@ export default function ChatPage() {
             .from('mensagens')
             .select('*')
             .order('id', { ascending: false })
-            .then((dados) => {
-                setListaDeMensagens(dados.data);
-
+            .then(({ data }) => {
+                // console.log('Dados da consulta:', data);
+                setListaDeMensagens(data);
             });
+
+        const subscription = escutaMensagensEmTempoReal((novaMensagem) => {
+            console.log('Nova mensagem:', novaMensagem);
+            console.log('listaDeMensagens:', listaDeMensagens);
+            // Quero reusar um valor de referencia (objeto/array) 
+            // Passar uma função pro setState
+
+            // setListaDeMensagens([
+            //     novaMensagem,
+            //     ...listaDeMensagens
+            // ])
+            setListaDeMensagens((valorAtualDaLista) => {
+                console.log('valorAtualDaLista:', valorAtualDaLista);
+                return [
+                    novaMensagem,
+                    ...valorAtualDaLista,
+                ]
+            });
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        }
     }, []);
 
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
-            de: 'pablovianas',
+            de: usuarioLogado,
             texto: novaMensagem,
         };
 
@@ -37,10 +71,7 @@ export default function ChatPage() {
                 mensagem
             ])
             .then(({ data }) => {
-                setListaDeMensagens([
-                    data[0],
-                    ...listaDeMensagens,
-                ]);
+
             })
 
 
@@ -133,7 +164,15 @@ export default function ChatPage() {
                             variant="primary"
                             styleSheet={{
                                 marginBottom: '10px',
+                                marginRight: '10px'
                             }}
+                            rounded='lg'
+                        />
+                        <ButtonSendSticker
+                            onStickerClick={(sticker) => {
+                                handleNovaMensagem(':sticker: ' + sticker);
+                            }}
+
                         />
                     </Box>
                 </Box>
@@ -225,23 +264,25 @@ function MessageList(props) {
                                 {(new Date().toLocaleDateString())}
                             </Text>
 
-                            <Button
-
-                                colorVariant="negative"
-                                label="Delete"
-                                variant="secondary"
-                                styleSheet={{
-                                    marginLeft: '20px',
-
-                                }}
-
-                            />
-
-
-
 
                         </Box>
-                        {mensagem.texto}
+                        {mensagem.texto.startsWith(':sticker:')
+                            ? (
+                                <Image src={mensagem.texto.replace(':sticker:', '')}
+                                    styleSheet={{
+                                        width: '70px',
+                                        height: '70px'
+
+                                    }}
+                                />
+                            )
+                            : (
+                                mensagem.texto
+                            )
+
+
+                        }
+
                     </Text>
                 );
             })}

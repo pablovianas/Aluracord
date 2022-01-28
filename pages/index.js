@@ -1,18 +1,18 @@
 import appConfig from '../config.json'
-import {Box, Button, Text, TextField, Image} from '@skynexui/components'
+import { Box, Button, Text, TextField, Image } from '@skynexui/components'
 import React from 'react';
-import {useRouter} from 'next/router' //react hooks
+import { useRouter } from 'next/router' //react hooks
 
 
-function Title(props){
+function Title(props) {
 
-    const Tag = props.tag || 'h2';
+  const Tag = props.tag || 'h2';
 
-    return (
-        <>
-    
-            <Tag>Welcome back!</Tag>
-            <style jsx>{`
+  return (
+    <>
+
+      <Tag>Welcome back!</Tag>
+      <style jsx>{`
                 ${Tag}{
                     color: ${appConfig.theme.colors.neutrals['#060606']};
                     font-size: 40px;
@@ -20,29 +20,10 @@ function Title(props){
                 }
             
             `}</style>
-        </>
-         
-    );
+    </>
+
+  );
 }
-
-
-//Compenente react
-
-/*function HomePage() {
-
-    //JSX
-
-  return (
-    <div>
-
-        <Title tag='h2'> Welcome back</Title>
-        <h2>Discord -Alura Matrix</h2>
-    </div>
-
-
-  )
-}
-*/
 
 export default function HomePage() {
 
@@ -77,40 +58,40 @@ export default function HomePage() {
           {/* Formulário */}
           <Box
             as="form"
-            onSubmit={function(event){
-                event.preventDefault();
-                router.push('/chat');
+            onSubmit={function (event) {
+              event.preventDefault();
+              router.push(`/chat?username=${username}`);
             }}
             styleSheet={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px', backgroundColor:'C1EAC5'
+              width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px', backgroundColor: 'C1EAC5'
             }}
           >
             <Title tag="h2">Boas vindas de volta!</Title>
-            <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals["#060606"], fontSize: '30px',   fontWeight: 'bold'}}>
+            <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals["#060606"], fontSize: '30px', fontWeight: 'bold' }}>
               {appConfig.name}
             </Text>
 
             <TextField
-                fullWidth
-                onChange={function (event){
-                    const value = event.target.value
+              fullWidth
+              onChange={function (event) {
+                const value = event.target.value
 
-                    setUsername(value)
-                }}
-                size="xs"
-                styleSheet={{}}
-                value={username}
-                variant="basicBordered"
+                setUsername(value)
+              }}
+              size="xs"
+              styleSheet={{}}
+              value={username}
+              variant="basicBordered"
             />
-           <Button
-            buttonColors={null}
-            label="Entrar"
-            colorVariant="dark"
-            iconName="github"
-            rounded="md"
-            size="lg"
-            type="submit"
+            <Button
+              buttonColors={null}
+              label="Entrar"
+              colorVariant="dark"
+              iconName="github"
+              rounded="md"
+              size="lg"
+              type="submit"
             />
           </Box>
           {/* Formulário */}
@@ -128,7 +109,7 @@ export default function HomePage() {
               borderRadius: '10px',
               flex: 1,
               minHeight: '240px',
-              backgroundColor:'C1EAC5'
+              backgroundColor: 'C1EAC5'
             }}
           >
             <Image
@@ -146,7 +127,7 @@ export default function HomePage() {
                 borderRadius: '1000px',
                 fontSize: '30px',
                 fontWeight: 'bold',
-                
+
               }}
             >
               {username}
